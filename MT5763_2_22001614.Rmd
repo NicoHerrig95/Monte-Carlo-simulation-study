@@ -23,38 +23,36 @@ Show how the sample variance of this sampling distribution changes as a function
 
 For the underlying problem, a sample containing 1e+5 (100*1000) random deviates from X ~ N($\mu$ = 4, $\sigma^2$ = 10) and Y ~ U(a = 2, b = 8) is used. To simulate "real-world conditions", the solution is obtained from only the below given vectors for X and Y.
 ```{r}
-# set seed for reproducibility
-RNGkind("L'Ecuyer-CMRG")
+
 set.seed(0911)
 
-# Using parallel computing techniques, we generate 100 sets of 1000 random deviates
-# for X...
-X <- unlist(mclapply(1:100, function(i) {
-  rnorm(1000, mean = 4, sd = sqrt(10))
-}, mc.cores = 8, mc.set.seed = TRUE))
+probability_calculator <- function(n) {
 
-# ...and for Y
-Y <- unlist(mclapply(1:100, function(i) {
-  runif(1000, min = 2, max = 8)
-}, mc.cores = 8, mc.set.seed = TRUE))
+  X <- rnorm(n, mean = 4, sd = sqrt(10))
+  Y <- runif(n, min = 2, max = 8)
+
+  # Calculating Pr(X>Y)
+  Pr_hat <- sum(X > Y) / n
+  
+  output <- list(X, Y, Pr_hat)
+  
+  return(output)
+}
 
 
-# Calculating Pr(X>Y)
-Pr_hat <- sum(X > Y) / (100*1000)
+results <- probability_calculator(100000)
 
-print(Pr_hat)
+print(results[3])
+
 ```  
 
 Calculating $\bar Pr(X>Y)$ from the initial sample without any further methods, we derive a value of `r toString(Pr_hat)`.
 To derive the distribution of $\bar Pr(X>Y)$, we use a non-parametric bootstrap. One benefit of this technique is that it does not rely on the assumption of normally distributed data.
 
+
 ```{r}
-# set seed for reproducibility
-RNGkind("L'Ecuyer-CMRG")
-set.seed(0112)
-
-n_straps <- 1000
-
+# creating function for bootstrap, using 8 cores (for completeness only).
+bootstrap_multicore <- function(n_straps, vec1 = X, vec2 = Y) {
 prob_vector <- unlist(mclapply(1:n_straps, function(n = n, vec1 = X, vec2 = Y) {
   resX <- vec1[sample(1 : length(vec1), length(vec1), replace = TRUE)]
   resY <- vec2[sample(1 : length(vec2), length(vec2), replace = TRUE)]
@@ -62,6 +60,23 @@ prob_vector <- unlist(mclapply(1:n_straps, function(n = n, vec1 = X, vec2 = Y) {
   Prob <- sum(resX > resY) / length(resX)
   return(Prob)
 }, mc.cores = 8, mc.set.seed = TRUE))
+return(prob_vector)
+}
+
+```
+
+
+
+```{r}
+# set seed for reproducibility
+RNGkind("L'Ecuyer-CMRG")
+set.seed(0112)
+
+
+X <- unlist(results[1])
+Y <- unlist(results[2])
+
+prob_vec <- bootstrap_multicore(n_straps = 10000)
 
 ```
 
@@ -71,16 +86,16 @@ The distribution of $Pr(X>Y)$ can now be evaluated \
 
 1. Using point estimates:
 ```{r}
-quantile(prob_vector, c(0.025, 0.5, 0.975))
+quantile(prob_vec, c(0.025, 0.5, 0.975))
 ```
 
 
 2. Using visualization (histogram):
 ```{r}
-df_probabilities <- as.data.frame(prob_vector)
+df_probabilities <- as.data.frame(prob_vec)
 
 df_probabilities %>% 
-ggplot(aes(x = prob_vector)) +
+ggplot(aes(x = prob_vec)) +
   geom_histogram(aes (y = ..density..),
                  bins = 20,
                  colour = 1,
@@ -96,50 +111,19 @@ Lastly, it is of interest how the sample variance of the sampling distribution c
 ```{r}
 
 
-# creating function for bootstrap, using 8 cores (for completeness only).
-bootstrap_multicore <- function(n_straps, vec1 = X, vec2 = Y) {
-prob_vector <- unlist(mclapply(1:n_straps, function(n = n, vec1 = X, vec2 = Y) {
-  resX <- vec1[sample(1 : length(vec1), length(vec1), replace = TRUE)]
-  resY <- vec2[sample(1 : length(vec2), length(vec2), replace = TRUE)]
-  
-  Prob <- sum(resX > resY) / length(resX)
-  return(Prob)
-}, mc.cores = 8, mc.set.seed = TRUE))
-return(prob_vector)
-}
-
-
-# creating function for variance of samples
-Sample_var <- function(i) {
-  n_straps <- i
-  
-  return(var(bootstrap_multicore(n_straps)))
-}
-
-mclapply(1:5, function(i) {
-  n_straps <- i
-  
-  return(var(bootstrap_multicore(n_straps)))
-})
-
-
-
-
-
-
 ```
 
 
 ```{r}
 
-seq_vec <- seq(2, 1000, by=20)
 
-mclapply(seq_vec, function(i) {
-  n_straps <- i
+mclapply(1:5, function(i) {
+  X_vec <- rnorm(i, mean = 4, sd = sqrt(10))
+  Y_vec <- runif(i, min = 2, max = 8)
   
-  return(var(bootstrap_multicore(n_straps)))
-}, mc.cores = 8)
-
+  
+})
 
 ```
+
 
