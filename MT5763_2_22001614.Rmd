@@ -15,11 +15,14 @@ library(parallel)
 ## Problem 1
 
 Description:
-The problem presents two variables X and Y, where X ~ N($\mu$ = 4, $\sigma^2$ = 10) and 
+Consider the following independent random variables: \
+X ~ N($\mu$ = 4, $\sigma^2$ = 10) \
 Y ~ U(a = 2, b = 8). \
-Compute $Pr(X > Y)$ and use bootstrapping to to derive the sampling distribution for your estimate of $Pr(X > Y)$. 
-Show how the sample variance of this sampling distribution changes as a function of the number of Monte Carlo simulations. \
-----------------------------------------------------------------------------------------------------------------------------
+Compute $Pr(X > Y)$  \
+Use bootstrapping to derive the sampling distribution for your estimate of $Pr(X > Y)$ \
+Show how the sample variance of this sampling distribution changes as a function of the number of
+Monte Carlo simulations.\
+------------------------------- \
 
 For the underlying problem, a sample containing 1e+5 (100*1000) random deviates from X ~ N($\mu$ = 4, $\sigma^2$ = 10) and Y ~ U(a = 2, b = 8) is used. To simulate "real-world conditions", the solution is obtained from only the below given vectors for X and Y.
 ```{r}
@@ -34,7 +37,9 @@ probability_calculator <- function(n) {
   # Calculating Pr(X>Y)
   Pr_hat <- sum(X > Y) / n
   
-  output <- list(X, Y, Pr_hat)
+  output <- list(X = X,
+                 Y = Y, 
+                 Pr_hat = Pr_hat)
   
   return(output)
 }
@@ -46,7 +51,7 @@ print(results[3])
 
 ```  
 
-Calculating $\bar Pr(X>Y)$ from the initial sample without any further methods, we derive a value of `r toString(Pr_hat)`.
+Calculating $\bar Pr(X>Y)$ from the initial sample without any further methods, we derive a value of `rtoString(results[3])`.
 To derive the distribution of $\bar Pr(X>Y)$, we use a non-parametric bootstrap. One benefit of this technique is that it does not rely on the assumption of normally distributed data.
 
 
@@ -59,7 +64,7 @@ prob_vector <- unlist(mclapply(1:n_straps, function(n = n, vec1 = X, vec2 = Y) {
   
   Prob <- sum(resX > resY) / length(resX)
   return(Prob)
-}, mc.cores = 8, mc.set.seed = TRUE))
+}, mc.cores = 8))
 return(prob_vector)
 }
 
@@ -69,14 +74,15 @@ return(prob_vector)
 
 ```{r}
 # set seed for reproducibility
-RNGkind("L'Ecuyer-CMRG")
-set.seed(0112)
+
 
 
 X <- unlist(results[1])
 Y <- unlist(results[2])
 
-prob_vec <- bootstrap_multicore(n_straps = 10000)
+#!!! as I use 10,000 bootstraps, computation can take some time!!!
+prob_vec <- bootstrap_multicore(n_straps = 10) 
+
 
 ```
 
@@ -103,27 +109,205 @@ ggplot(aes(x = prob_vec)) +
   geom_density(lwd = 1.2,
                linetype = 2,
                colour = 2)+
-  xlab("Pr(X>Y)")
+  xlab("Pr(X>Y)")+
+  ggtitle("Distribution of Pr(X>Y)")
+  
 ```
 
-Lastly, it is of interest how the sample variance of the sampling distribution changes with dependence on the bootstraps  
+Lastly, it is of interest how the sample variance of the sampling distribution changes with dependence   
+
+
+```{r}
+RNGkind("L'Ecuyer-CMRG")
+set.seed(149)
+
+n_deviates <- seq(5, 300000, by = 100)
+
+prob <- unlist(mclapply(n_deviates, function(i) {
+  
+    x <- rnorm(i, mean = 4, sd = sqrt(10))
+    y <- runif(i, min = 2, max = 8)
+    
+    prob <- sum(x>y) / length(x)
+    deviates <- i
+    
+
+    
+    return(prob)
+
+}, mc.cores = 8, mc.set.seed = TRUE)
+)
+
+
+  
+```
+
+```{r}
+results_1.3 <- data.frame(prob, n_deviates)
+
+
+results_1.3 %>% 
+  ggplot(aes(x = n_deviates, y = prob)) +
+  geom_point(alpha = 1/4)+
+  geom_hline(yintercept = median(prob), colour = "red", lty='dashed', lwd=0.5)+
+  ylab("Pr(X>Y)")+
+  xlab("number of simulations")+
+  ggtitle("Pr(X>Y) in relation to the number of simulations")
+```
+
+```{r}
+
+variance <- c()
+
+for (i in 1 : (length(prob) - 1)) {
+  variance[i] <- var(prob[1 : (i + 1)])
+}
+
+results_1.3.2 <- data.frame(variance, n_deviates[2:3000])
+
+results_1.3.2 %>% 
+  ggplot(aes(x = n_deviates.2.3000., y = variance))+
+  geom_point(alpha = 1/4)+
+  ylab("variance")+
+  xlab("number of simulations")+
+  ggtitle("Variance of Pr(X>Y) in relation to the number of simulations")
+  
+
+```
+
+
+
+## Problem 2
+
+Description:
+Consider the following football tournament format: a team keeps playing until they accrue 7 wins or 3 losses (whichever comes first - no draws allowed). Assume a fixed win rate P (element of) [0, 1] across all rounds (they are paired at random).\
+Plot how the total number of matches played (i.e. wins + losses) varies as a function of $p$.\
+Comment on the observed win rate relative to the assumed win rate $p$ (i.e. if a team obtains 2 wins - 3 losses, the maximum likelihood point estimate for their win rate is 40%). Specifically, focus on the effect driven by the format of this tournament. \
+------------------------------- \
+
+
+First, an algorithm simulating the above described tournament is needed. The code below shows a function for simulating the process.
+```{r}
+# function for simulating the tournament
+tournament_sim <- function(p_win) {
+  p_loss <- 1 - p_win #loss rate
+  outcome <- c("win", "loss") 
+  results_storage <- c() #empty vector for storing match results
+
+# as you never play more than 9 games 
+# (6 wins + 3 losses (=9) or 2 losses and 7 wins (=9))
+for (i in 1 : 9) {
+  
+  # simulating matches with sampling from c("win", "loss") with given
+  # probabilities and replacement. 
+  # Adding the result to storage vector.
+  results_storage <- c(sample(outcome, size = 1,
+                            replace = TRUE,
+                            prob = c(p_win, p_loss)), results_storage)
+  
+  # Conditions for winning or loosing the tournament  
+    if (length(results_storage[results_storage == "win"]) == 7) {
+      break
+    }
+  
+    if (length(results_storage[results_storage == "loss"]) == 3) {
+      break
+   }
+  }
+
+  #binding output together as a list
+  output <- list(played_matches = length(results_storage),
+                 match_results = results_storage,
+                 overview = table(results_storage))
+  
+  return(output)
+}
+```
+
+To solve the problem, a fixed win rate $p$ has to be defined. The following  assumes a fixed win rate per round of 75%, so $p = 0.75$. \
+
+```{r}
+# declaring p
+p <- 0.75
+
+set.seed(0911)
+#simulations one tournament
+results <- tournament_sim(p_win = p)
+```
+
+
+Playing one tournament, the observed results are as following:/
+/
+1. Result of the tournament:
+```{r}
+results$match_results
+```
+
+2. Overall results:
+```{r}
+results$overview
+```
+
+3. Number of matched played:
+```{r}
+results$played_matches
+```
+\
+It now should be taken in consideration how the *number of total matches* changes if we alter the winning rate $p$.
+This problem can be separated into several steps./
+First,
+
+```{r}
+# Alternating the sim function so that output is solely the
+# number of played games
+n_games <- function(p_win) {
+  p_loss <- 1 - p_win 
+  outcome <- c("win", "loss") 
+  results_storage <- c()
+
+  for (i in 1 : 9) {
+  
+    results_storage <- c(sample(outcome, size = 1,
+                              replace = TRUE,
+                              prob = c(p_win, p_loss)), results_storage)
+  
+      if (length(results_storage[results_storage == "win"]) == 7) {
+        break
+      }
+  
+      if (length(results_storage[results_storage == "loss"]) == 3) {
+        break
+    }
+  }
+
+  played_matches  <-  length(results_storage)
+  
+  return(played_matches)
+}
+
+
+```
+
+Win rates from 10% to 90% are taken into consideration, in steps by 10%.  
+
+```{r}
+# generating storage matrix
+win_rates <- seq(from = 0.1, to = 0.90, by = 0.1)
+
+storage <- matrix(nrow = length(win_rates), ncol = 1000)
+
+```
 
 ```{r}
 
 
-```
+store <- c(rep(NA,10))
 
 
-```{r}
+store <- mclapply(1:11, function(i){
+   n_games(0.1)
+  })
 
-
-mclapply(1:5, function(i) {
-  X_vec <- rnorm(i, mean = 4, sd = sqrt(10))
-  Y_vec <- runif(i, min = 2, max = 8)
-  
-  
-})
 
 ```
-
 
