@@ -27,7 +27,7 @@ Monte Carlo simulations.\
 For the underlying problem, a sample containing 1e+5 (100*1000) random deviates from X ~ N($\mu$ = 4, $\sigma^2$ = 10) and Y ~ U(a = 2, b = 8) is used. To simulate "real-world conditions", the solution is obtained from only the below given vectors for X and Y.
 ```{r}
 
-set.seed(0911)
+
 
 probability_calculator <- function(n) {
 
@@ -75,13 +75,13 @@ return(prob_vector)
 ```{r}
 # set seed for reproducibility
 
-
+rm(.Random.seed)
 
 X <- unlist(results[1])
 Y <- unlist(results[2])
 
 #!!! as I use 10,000 bootstraps, computation can take some time!!!
-prob_vec <- bootstrap_multicore(n_straps = 10) 
+prob_vec <- bootstrap_multicore(n_straps = 3000) 
 
 
 ```
@@ -118,9 +118,8 @@ Lastly, it is of interest how the sample variance of the sampling distribution c
 
 
 ```{r}
-RNGkind("L'Ecuyer-CMRG")
-set.seed(149)
 
+rm(.Random.seed)
 n_deviates <- seq(5, 300000, by = 100)
 
 prob <- unlist(mclapply(n_deviates, function(i) {
@@ -152,7 +151,8 @@ results_1.3 %>%
   geom_hline(yintercept = median(prob), colour = "red", lty='dashed', lwd=0.5)+
   ylab("Pr(X>Y)")+
   xlab("number of simulations")+
-  ggtitle("Pr(X>Y) in relation to the number of simulations")
+  ggtitle("Pr(X>Y) in relation to the number of simulations")+
+  ylim(c(0.35, 0.45))
 ```
 
 ```{r}
@@ -300,13 +300,16 @@ storage <- matrix(nrow = length(win_rates), ncol = 1000)
 
 ```{r}
 
+rm(.Random.seed)
+store <- matrix(nrow = 9, ncol=10000)
 
-store <- c(rep(NA,10))
 
-
-store <- mclapply(1:11, function(i){
+store[1,] <- unlist(mclapply(1:10000, function(i){
    n_games(0.1)
-  })
+  }, mc.cores = 8))
+store[2,] <- unlist(mclapply(1:10000, function(i){
+   n_games(0.2)
+  }, mc.cores = 8))
 
 
 ```
