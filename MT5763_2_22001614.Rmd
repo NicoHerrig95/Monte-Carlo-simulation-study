@@ -215,10 +215,15 @@ for (i in 1 : 9) {
    }
   }
 
+  
+  
+  true_winrate <- (sum(str_count(results_storage, pattern = "win")) / 
+                     length(results_storage))
+  
   #binding output together as a list
   output <- list(played_matches = length(results_storage),
-                 match_results = results_storage,
-                 overview = table(results_storage))
+                 overview = table(results_storage),
+                 true_winrate = true_winrate)
   
   return(output)
 }
@@ -228,9 +233,9 @@ To solve the problem, a fixed win rate $p$ has to be defined. The following  ass
 
 ```{r}
 # declaring p
-p <- 0.75
+p <- 0.6
 
-set.seed(0911)
+
 #simulations one tournament
 results <- tournament_sim(p_win = p)
 ```
@@ -238,78 +243,123 @@ results <- tournament_sim(p_win = p)
 
 Playing one tournament, the observed results are as following:/
 /
-1. Result of the tournament:
-```{r}
-results$match_results
-```
 
-2. Overall results:
+
+1. Overall results:
 ```{r}
 results$overview
 ```
 
-3. Number of matched played:
+2. Number of matched played:
 ```{r}
 results$played_matches
 ```
+
+3. True win rate
+```{r}
+results$true_winrate
+```
+
+
+
 \
 It now should be taken in consideration how the *number of total matches* changes if we alter the winning rate $p$.
 This problem can be separated into several steps./
 First,
 
-```{r}
-# Alternating the sim function so that output is solely the
-# number of played games
-n_games <- function(p_win) {
-  p_loss <- 1 - p_win 
-  outcome <- c("win", "loss") 
-  results_storage <- c()
 
-  for (i in 1 : 9) {
-  
-    results_storage <- c(sample(outcome, size = 1,
-                              replace = TRUE,
-                              prob = c(p_win, p_loss)), results_storage)
-  
-      if (length(results_storage[results_storage == "win"]) == 7) {
-        break
-      }
-  
-      if (length(results_storage[results_storage == "loss"]) == 3) {
-        break
-    }
-  }
-
-  played_matches  <-  length(results_storage)
-  
-  return(played_matches)
-}
-
-
-```
 
 Win rates from 10% to 90% are taken into consideration, in steps by 10%.  
 
 ```{r}
-# generating storage matrix
+# win rates
 win_rates <- seq(from = 0.1, to = 0.90, by = 0.1)
-
-storage <- matrix(nrow = length(win_rates), ncol = 1000)
 
 ```
 
 ```{r}
 
 rm(.Random.seed)
-store <- matrix(nrow = 9, ncol=10000)
 
 
-store[1,] <- unlist(mclapply(1:10000, function(i){
-   n_games(0.1)
+tournament_stats <- function(n, rates = win_rates) {
+  store <- matrix(nrow = length(rates), ncol=n)
+
+for (i in 1 : length(rates)) {
+  prob <- rates[i]
+  
+store[i,] <- unlist(mclapply(1:n, function(i){
+  as.integer(tournament_sim(p_win = prob)[1])
   }, mc.cores = 8))
-store[2,] <- unlist(mclapply(1:10000, function(i){
-   n_games(0.2)
-  }, mc.cores = 8))
+}
+  return(store)
+}
+
+
+
+
+
+```
+
+
+```{r}
+table_n_matches <- tournament_stats(n = 10000)
+```
+
+
+```{r}
+# Generating a bootstrap function 
+
+bootstrap_nmatches <- function(n_straps, store){
+    avg_matches <- matrix(nrow = 9, ncol = n_straps)
+
+    for (j in 1 : 9){
+
+      #bootstrap and calculate the mean of each bootstrap sample
+      avg_matches[j,] <- unlist(mclapply(1 : n_straps, function(i){
+      median(store[j, sample(1 : dim(store)[2], size = dim(store)[2], 
+                             replace = TRUE)])
+      }, mc.cores = 8))
+    }
+    
+    
+    
+    
+    substore <- rep(NA, 9)
+    for (i in 1 : 9) {
+    substore[i] <- median(avg_matches[i,])  
+    }
+
+    output <- data.frame(Prob = seq(from = 0.1, to = 0.90, by = 0.1),
+                         games_on_average = substore)
+    
+    return(output)
+}
+
+
+
+```
+
+```{r}
+rm(.Random.seed)
+
+results_2.1 <- bootstrap_nmatches(1000, table_n_matches)
+
+print(results_2.1)
+
+```
+
+```{r}
+
+rm(.Random.seed)
+
+
+# Beschriften der Achsen !!!
+
+results_2.1 %>% 
+  ggplot(aes(x = Prob, y = games_on_average))+
+  geom_point()+
+  ylim(c(0,9))
 
 
 ```
