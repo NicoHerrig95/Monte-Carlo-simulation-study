@@ -5,10 +5,11 @@ date: "2022-10-15"
 output: pdf_document
 ---
 
-```{r}
+```{r include = FALSE}
 
 library(tidyverse)
 library(parallel)
+library(scales)
 
 ```
 
@@ -26,8 +27,6 @@ Monte Carlo simulations.\
 
 For the underlying problem, a sample containing 1e+5 (100*1000) random deviates from X ~ N($\mu$ = 4, $\sigma^2$ = 10) and Y ~ U(a = 2, b = 8) is used. To simulate "real-world conditions", the solution is obtained from only the below given vectors for X and Y.
 ```{r}
-
-
 
 probability_calculator <- function(n) {
 
@@ -47,57 +46,53 @@ probability_calculator <- function(n) {
 
 results <- probability_calculator(100000)
 
+
 print(results[3])
+```
 
-```  
-
-Calculating $\bar Pr(X>Y)$ from the initial sample without any further methods, we derive a value of `rtoString(results[3])`.
-To derive the distribution of $\bar Pr(X>Y)$, we use a non-parametric bootstrap. One benefit of this technique is that it does not rely on the assumption of normally distributed data.
-
-
+Calculating $\widehat{Pr}(X>Y)$ from the initial sample without any further methods, we derive a value of `r toString(results[3])` .\
+\
+To derive the distribution of $\widehat{Pr}(X>Y)$, we use a non-parametric bootstrap. One benefit of this technique is that it does not rely on the assumption of normally distributed data. The following chunk of code defines a function for such bootstrap.
 ```{r}
-# creating function for bootstrap, using 8 cores (for completeness only).
-bootstrap_multicore <- function(n_straps, vec1 = X, vec2 = Y) {
+# Function for bootstrap procedure, using parallel computing technique for
+# speeding up the computation. 
+bootstrap_multicore_problem1 <- function(n_straps, vec1 = X, vec2 = Y) {
 prob_vector <- unlist(mclapply(1:n_straps, function(n = n, vec1 = X, vec2 = Y) {
-  resX <- vec1[sample(1 : length(vec1), length(vec1), replace = TRUE)]
+  # sampling both vectors X & Y
+  resX <- vec1[sample(1 : length(vec1), length(vec1), replace = TRUE)] 
   resY <- vec2[sample(1 : length(vec2), length(vec2), replace = TRUE)]
   
-  Prob <- sum(resX > resY) / length(resX)
-  return(Prob)
+  Prob <- sum(resX > resY) / length(resX) # calculating Pr(X>Y) of each 
+  return(Prob)                            # bootstrap sample
 }, mc.cores = 8))
 return(prob_vector)
 }
 
 ```
+The bootstrap algorithm above re-samples the vectors X and Y *with replacement*, calculates the resulting $\widehat{Pr}(X>Y)$, and repeats this procedure *n* times. The algorithm generates a vector with *n*  probabilities. \
+Using the bootstrap algorithm, the distribution of $\widehat{Pr}(X>Y)$ can now be evaluated.\
 
-
-
-```{r}
+```{r echo = FALSE, warning=FALSE}
 # set seed for reproducibility
 
 rm(.Random.seed)
 
-X <- unlist(results[1])
-Y <- unlist(results[2])
+X <- unlist(results[1]) #transforming the output of the probability_calculator 
+Y <- unlist(results[2]) #function into vectors
 
 #!!! as I use 10,000 bootstraps, computation can take some time!!!
-prob_vec <- bootstrap_multicore(n_straps = 3000) 
+prob_vec <- bootstrap_multicore_problem1(n_straps = 3000) 
 
 
 ```
-
-The bootstrap algorithm above re-samples the vectors X and Y *with replacement*, calculates the resulting $\bar Pr_i(X>Y)$, and repeats this procedure *n* times. The algorithm generates a vector (*prob_vector*) with *n*  probabilities. \
-The distribution of $Pr(X>Y)$ can now be evaluated \
-
-
-1. Using point estimates:
-```{r}
+\
+1. Point estimates (Quantile):
+```{r echo=FALSE}
 quantile(prob_vec, c(0.025, 0.5, 0.975))
 ```
-
-
-2. Using visualization (histogram):
-```{r}
+\
+2. Visualization (histogram):
+```{r echo=FALSE, fig.align = 'center'}
 df_probabilities <- as.data.frame(prob_vec)
 
 df_probabilities %>% 
@@ -108,40 +103,46 @@ ggplot(aes(x = prob_vec)) +
                  fill = "white")+
   geom_density(lwd = 1.2,
                linetype = 2,
-               colour = 2)+
+               colour = "blue")+
   xlab("Pr(X>Y)")+
-  ggtitle("Distribution of Pr(X>Y)")
+  ggtitle("Distribution of Pr(X>Y)")+
+  theme(plot.title = element_text(hjust= 0.5))+
+  geom_vline(xintercept = median(prob_vec), colour = "red", lty='dashed', lwd=1)
   
 ```
-
-Lastly, it is of interest how the sample variance of the sampling distribution changes with dependence   
-
-
+From the observed data we can infer that, after bootstrapping the original sample, the data is normally distributed around the central value (median) of `r toString(quantile(prob_vec, 0.5))`\
+\
+Lastly, it is of interest how the sample variance of the sampling distribution changes with dependence on the simulations run. This part of the experiment is based on the *law of large numbers* theorem. As an observer, we can assume that with increasing number of simulations (increasing number of random deviates used), our *simulated* $\widehat{Pr}(X>Y)$ approximates the *theoretical* value of $Pr(X>Y)$.\
+To test this assumption, we analyse the behavior of $\widehat{Pr}(X>Y)$ for *n* simulations, where *n* is a vector from 5 to 300,000 by steps of 100 simulations.
 ```{r}
 
 rm(.Random.seed)
+
+# vector for the number of simulations/deviates, as a sequence from 5 to 300k
+# by steps of 100.
 n_deviates <- seq(5, 300000, by = 100)
 
+# Generating n deviates, corresponding to the vector defined above, and 
+# calculating Pr(X>Y) from the used deviates. 
 prob <- unlist(mclapply(n_deviates, function(i) {
   
     x <- rnorm(i, mean = 4, sd = sqrt(10))
     y <- runif(i, min = 2, max = 8)
     
-    prob <- sum(x>y) / length(x)
+    prob <- sum(x > y) / length(x)
     deviates <- i
-    
 
-    
     return(prob)
 
 }, mc.cores = 8, mc.set.seed = TRUE)
 )
 
-
-  
 ```
 
-```{r}
+
+
+
+```{r warning = FALSE, echo=FALSE}
 results_1.3 <- data.frame(prob, n_deviates)
 
 
@@ -149,13 +150,17 @@ results_1.3 %>%
   ggplot(aes(x = n_deviates, y = prob)) +
   geom_point(alpha = 1/4)+
   geom_hline(yintercept = median(prob), colour = "red", lty='dashed', lwd=0.5)+
-  ylab("Pr(X>Y)")+
   xlab("number of simulations")+
   ggtitle("Pr(X>Y) in relation to the number of simulations")+
-  ylim(c(0.35, 0.45))
+  scale_y_continuous(name="Pr(X>Y)", limits=c(0.35, 0.45), labels = label_number_si())+
+  scale_x_continuous(name="number of simulations", labels = label_number_si())+
+  theme(plot.title = element_text(hjust= 0.5))
+  
 ```
+The plot above shows that with an increasing number of simulations used, the observed $\widehat{Pr}(X>Y)$ converges to its theoretical value.\
+It can be assumed that for our simulation, |$\widehat{Pr}(X>Y)$ - $Pr(X>Y)$| $\rightarrow 0$ as $n \rightarrow \infty$.      
 
-```{r}
+```{r echo=FALSE}
 
 variance <- c()
 
@@ -168,19 +173,20 @@ results_1.3.2 <- data.frame(variance, n_deviates[2:3000])
 results_1.3.2 %>% 
   ggplot(aes(x = n_deviates.2.3000., y = variance))+
   geom_point(alpha = 1/4)+
-  ylab("variance")+
-  xlab("number of simulations")+
-  ggtitle("Variance of Pr(X>Y) in relation to the number of simulations")
+  scale_y_continuous(name="variance of Pr(X>Y)", labels = label_number_si())+
+  scale_x_continuous(name="number of simulations", labels = label_number_si())+
+  ggtitle("Variance of Pr(X>Y) in relation to the number of simulations")+
+  theme(plot.title = element_text(hjust= 0.5))
   
 
 ```
-
+A look at the total sample variance with dependence on the number of deviates used for the calculation shows that the variance approaches zero arbitrarily closely when more than 100,000 simulations are run, which underlines the assumption made above. It can be deducted that more than 100,000 simulations should be run to calculate the empirical probability $\widehat{Pr}(X>Y)$. 
 
 
 ## Problem 2
 
 Description:
-Consider the following football tournament format: a team keeps playing until they accrue 7 wins or 3 losses (whichever comes first - no draws allowed). Assume a fixed win rate P (element of) [0, 1] across all rounds (they are paired at random).\
+Consider the following football tournament format: a team keeps playing until they accrue 7 wins or 3 losses (whichever comes first - no draws allowed). Assume a fixed win rate $P \in [0, 1]$ across all rounds (they are paired at random).\
 Plot how the total number of matches played (i.e. wins + losses) varies as a function of $p$.\
 Comment on the observed win rate relative to the assumed win rate $p$ (i.e. if a team obtains 2 wins - 3 losses, the maximum likelihood point estimate for their win rate is 40%). Specifically, focus on the effect driven by the format of this tournament. \
 ------------------------------- \
@@ -229,21 +235,20 @@ for (i in 1 : 9) {
 }
 ```
 
-To solve the problem, a fixed win rate $p$ has to be defined. The following  assumes a fixed win rate per round of 75%, so $p = 0.75$. \
+To solve the problem, a fixed theoretical win rate $p$ has to be defined. The following  assumes a fixed win rate per round of 75%, so $p = 0.75$. \
 
 ```{r}
 # declaring p
-p <- 0.6
+p <- 0.75
 
 
-#simulations one tournament
+#simulations one signle tournament
 results <- tournament_sim(p_win = p)
 ```
 
 
-Playing one tournament, the observed results are as following:/
-/
-
+Playing one tournament, the observed results are as following: \
+\
 
 1. Overall results:
 ```{r}
@@ -263,75 +268,86 @@ results$true_winrate
 
 
 \
-It now should be taken in consideration how the *number of total matches* changes if we alter the winning rate $p$.
-This problem can be separated into several steps./
-First,
-
-
-
-Win rates from 10% to 90% are taken into consideration, in steps by 10%.  
+It now should be taken in consideration how the *number of total matches* changes if we alter the winning rate $p$. As the conditions for ending a tournament are either 7 wins or 3 losses, the number of matches played will be $x \in \mathbb{N} [3,9]$, where x is the number of matches played.
+Win rates from $p = 0.1$ to $p = 0.9$ are taken into consideration, in steps by 0.1.  
 
 ```{r}
-# win rates
+# Generating a vector containing the win rates of interest
 win_rates <- seq(from = 0.1, to = 0.90, by = 0.1)
 
 ```
 
+
+The algorithm described below takes a vector of win rates (*rates*) and the number of simulations per fixed win rate *n* as input. It then simulates *n* tournaments per win rate and stores the number of played matches per tournament in a corresponding storing matrix. 
 ```{r}
 
-rm(.Random.seed)
-
-
-tournament_stats <- function(n, rates = win_rates) {
+tournament_stats_ngames <- function(n, rates = win_rates) {
+  
+  # generating a matrix for storing the results
   store <- matrix(nrow = length(rates), ncol=n)
 
-for (i in 1 : length(rates)) {
-  prob <- rates[i]
-  
-store[i,] <- unlist(mclapply(1:n, function(i){
-  as.integer(tournament_sim(p_win = prob)[1])
+  # iterations i are corresponding the the number of rates the algorithm 
+  # shall take into consideration
+  for (i in 1 : length(rates)) {
+    prob <- rates[i]
+    
+    # simulating n tournaments per win rate and storing the number of matches
+    # played into the matrix "store"
+    store[i,] <- unlist(mclapply(1 : n, function(i){
+    as.integer(tournament_sim(p_win = prob)[1])
   }, mc.cores = 8))
 }
   return(store)
 }
 
 
-
-
-
 ```
 
+As a next step, 10,000 matches per win rate are simulated and stored in a matrix (*table_n_matches*).
+```{r warning=FALSE}
+rm(.Random.seed)
 
-```{r}
-table_n_matches <- tournament_stats(n = 10000)
+# simulating 10,000 tournaments per fixed win rate (variable win_rates [0.1, 0.9] is
+# set as default)
+table_n_matches <- tournament_stats_ngames(n = 10000)
 ```
 
+As exact results are of interest, the matrix containing the number of matches per tournament  is put into a non-parametric bootstrap algorithm. The algorithm, using a matrix as an input as well as the number of bootstraps *n* (*per winning rate*), generates the median of the strapped sample in a first step (i.e., *n* medians per fixed winning rate). In a second step, the algorithm then calculates the median of the calculated medians from the bootstrapping in step 1.\
+The aim of this algorithm is to compute the most accurate estimator for the numbers of matches played in a tournament, corresponding to the underlying fixed winning rate *p*.
 
 ```{r}
-# Generating a bootstrap function 
+# Generating a bootstrap function with number of straps and matrix of results
+# as Input. Generates a Data.frame as Output, containing the average value of
+# the sample's medians and the corresponding win rate. 
 
-bootstrap_nmatches <- function(n_straps, store){
-    avg_matches <- matrix(nrow = 9, ncol = n_straps)
+bootstrap_problem_two <- function(n_straps, store){
+  
+    # generating a store matrix with 9 rows (one per win rate) and one column
+    # per bootstrap, storing the median of the bootstrap sample
+    avg_storer <- matrix(nrow = 9, ncol = n_straps) 
 
-    for (j in 1 : 9){
+    for (j in 1 : 9){ # 9 iterations (as we use 9 win rates)
 
       #bootstrap and calculate the mean of each bootstrap sample
-      avg_matches[j,] <- unlist(mclapply(1 : n_straps, function(i){
+      avg_storer[j,] <- unlist(mclapply(1 : n_straps, function(i){
       median(store[j, sample(1 : dim(store)[2], size = dim(store)[2], 
                              replace = TRUE)])
       }, mc.cores = 8))
     }
     
-    
-    
-    
+    # generating a vector to store the median of each row 
     substore <- rep(NA, 9)
+    
+    # calculating the median of each row of avg_storer
     for (i in 1 : 9) {
-    substore[i] <- median(avg_matches[i,])  
+    substore[i] <- median(avg_storer[i,])  
     }
-
+    
+    
+    # binding together the win rate and its corresponding average matches per 
+    # tournament
     output <- data.frame(Prob = seq(from = 0.1, to = 0.90, by = 0.1),
-                         games_on_average = substore)
+                         average_value = substore)
     
     return(output)
 }
@@ -339,17 +355,21 @@ bootstrap_nmatches <- function(n_straps, store){
 
 
 ```
-
-```{r}
+Using this algorithm on our matrix from above (*table_n_matches*) with *n* = 1000 bootstraps, we derive the following results:
+```{r, echo=FALSE}
 rm(.Random.seed)
 
-results_2.1 <- bootstrap_nmatches(1000, table_n_matches)
+results_2.1 <- bootstrap_problem_two(1000, table_n_matches)
+results_2.1 <- results_2.1 %>% 
+  rename(probability_theoretical = 1,
+         matches_played = 2)
+
 
 print(results_2.1)
 
 ```
 
-```{r}
+```{r echo=FALSE}
 
 rm(.Random.seed)
 
@@ -357,10 +377,64 @@ rm(.Random.seed)
 # Beschriften der Achsen !!!
 
 results_2.1 %>% 
-  ggplot(aes(x = Prob, y = games_on_average))+
+  ggplot(aes(x = probability_theoretical, y = matches_played))+
   geom_point()+
-  ylim(c(0,9))
+  scale_x_continuous(name="theoretical win rates", limits=c(0.1, 0.9),
+                     n.breaks = 9)+
+  scale_y_continuous(name="average matches played", limits=c(0, 9),
+                     n.breaks = 9)+
+  ggtitle("Average number of played matches in relation to a fixed theoretical win rate")+
+  theme(plot.title = element_text(hjust= 0.5))
+
 
 
 ```
+INTERPRETATION WHEN SEEDS ARE SET \
+
+The last part of the problem asks for the true win rates (observed win rate) of a team in comparison to the underlying theoretical win rate of the simulation.To solve this problem with computation, an appropriate algorithm is needed.\
+The algorithm below is an altered version of the *tournament_stats_ngames* algorithm. The only difference is that it now uses the third element of the output list of the original underlying algorithm *tournament_sim* (line 406), which is the proportion of matches won in a tournament.
+
+```{r}
+
+tournament_stats_truewinrate <- function(n, rates = win_rates) {
+  store <- matrix(nrow = length(rates), ncol=n)
+
+for (i in 1 : length(rates)) {
+  prob <- rates[i]
+  
+store[i,] <- unlist(mclapply(1:n, function(i){
+  as.numeric(tournament_sim(p_win = prob)[3]) # output of tournament_sim is 
+  }, mc.cores = 8))                           # now true_winrate, as numeric
+}
+  return(store)
+}
+```
+We again simulate 10,000 tournaments and use the bootstrap algorithm (1000 bootstrap-samples per theoretical win rate) for deriving the most accurate estimates.
+
+```{r}
+true_w_rates <- tournament_stats_truewinrate(10000)
+
+df_true_rates <- bootstrap_problem_two(n_straps = 1000, store = true_w_rates)
+
+df_true_rates <- df_true_rates%>% 
+  rename(probability_theoretical = 1,
+         win_rate_observed = 2)
+
+
+print(df_true_rates)
+```
+
+```{r}
+
+df_true_rates %>% 
+  ggplot(aes(x = probability_theoretical, y = win_rate_observed))+
+  geom_point()+
+  scale_x_continuous(name="theoretical win rates", limits=c(0.1, 0.9),
+                     n.breaks = 9)+
+  scale_y_continuous(name="average observed win rates", limits=c(0.0, 1.0),
+                     n.breaks = 11)+
+  ggtitle("Average number of played matches in relation to a fixed theoretical win rate")+
+  theme(plot.title = element_text(hjust= 0.5))
+```
+
 
