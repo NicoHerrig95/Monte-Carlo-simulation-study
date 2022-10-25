@@ -64,7 +64,7 @@ prob_vector <- unlist(mclapply(1:n_straps, function(n = n, vec1 = X, vec2 = Y) {
   
   Prob <- sum(resX > resY) / length(resX) # calculating Pr(X>Y) of each 
   return(Prob)                            # bootstrap sample
-}, mc.cores = 8))
+}, mc.cores = 6))
 return(prob_vector)
 }
 
@@ -80,7 +80,7 @@ rm(.Random.seed)
 X <- unlist(results[1]) #transforming the output of the probability_calculator 
 Y <- unlist(results[2]) #function into vectors
 
-#!!! as I use 10,000 bootstraps, computation can take some time!!!
+#!!! as I use 3000 bootstraps, computation can take some time!!!
 prob_vec <- bootstrap_multicore_problem1(n_straps = 3000) 
 
 
@@ -134,7 +134,7 @@ prob <- unlist(mclapply(n_deviates, function(i) {
 
     return(prob)
 
-}, mc.cores = 8, mc.set.seed = TRUE)
+}, mc.cores = 6, mc.set.seed = TRUE)
 )
 
 ```
@@ -242,7 +242,7 @@ To solve the problem, a fixed theoretical win rate $p$ has to be defined. The fo
 p <- 0.75
 
 
-#simulations one signle tournament
+#simulations one single tournament
 results <- tournament_sim(p_win = p)
 ```
 
@@ -295,7 +295,7 @@ tournament_stats_ngames <- function(n, rates = win_rates) {
     # played into the matrix "store"
     store[i,] <- unlist(mclapply(1 : n, function(i){
     as.integer(tournament_sim(p_win = prob)[1])
-  }, mc.cores = 8))
+  }, mc.cores = 6))
 }
   return(store)
 }
@@ -404,7 +404,7 @@ for (i in 1 : length(rates)) {
   
 store[i,] <- unlist(mclapply(1:n, function(i){
   as.numeric(tournament_sim(p_win = prob)[3]) # output of tournament_sim is 
-  }, mc.cores = 8))                           # now true_winrate, as numeric
+  }, mc.cores = 6))                           # now true_winrate, as numeric
 }
   return(store)
 }
