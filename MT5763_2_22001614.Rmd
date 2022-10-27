@@ -245,7 +245,7 @@ for (i in 1 : 9) {
 }
 ```
 
-To solve the problem, a fixed theoretical win rate $p$ has to be defined. The following  assumes a fixed win rate per round of 75%, so $p = 0.75$. \
+To solve the problem, a fixed expected win rate $p$ has to be defined. The following  assumes a  win rate per round of 75%, so $p = 0.75$. \
 
 ```{r}
 # declaring p
@@ -280,7 +280,7 @@ results$true_winrate
 
 
 \
-It now should be taken in consideration how the *number of total matches* changes if we alter the winning rate $p$. As the conditions for ending a tournament are either 7 wins or 3 losses, the number of played matches can be defined as $x \in \mathbb{N} [3,9]$, where x is the number of matches played.
+It now should be taken in consideration how the *number of total matches* changes if we alter  $p$. As the conditions for ending a tournament are either 7 wins or 3 losses, the number of played matches can be defined as $x \in \mathbb{N} [3,9]$, where x is the number of matches played.
 Win rates from $p = 0.1$ to $p = 0.9$ are taken into consideration, in steps by 0.1.  
 
 ```{r}
@@ -475,9 +475,9 @@ df_f1 %>%
 ```
 
 
-Using a simple grid search algorithm for seeking the maximum of both $f_1(p)$ and $f_2(p)$, both functions peek at a *p* of `r toString(maximum_func1)` and `r toString(maximum_func2)`, respectively. In conclusion, the probability of playing the maximum amount of matches in a tournament decreases with a *p* > 0.78. Therefore, we can observe a negative $\delta$ at *p* = 0.9
+Using a simple grid search algorithm for seeking the maximum of both $f_1(p)$ and $f_2(p)$, both functions peek at a *p* of `r toString(maximum_func1)` and `r toString(maximum_func2)`, respectively. In conclusion, the likelihood of playing the maximum amount of matches in a tournament decreases with a *p* > 0.78. Therefore, we can observe a negative $\delta$ at *p* = 0.9
 
-The last part of the problem asks for the true win rates (observed win rate) of a team in comparison to the underlying theoretical win rate of the simulation.To solve this problem with computation, an appropriate algorithm is needed.\
+The last part of the problem asks for the true win rates (observed win rates) of a team in comparison to the underlying expected win rate of the simulation. To solve this problem with computation, an appropriate algorithm is needed.\
 The algorithm below is an altered version of the *tournament_stats_ngames* algorithm. The only difference is that it now uses the third element of the output list of the original underlying algorithm *tournament_sim*, which is the proportion of matches won in a tournament. 
 
 ```{r}
@@ -509,7 +509,7 @@ df_true_rates$diff <- df_true_rates$average_value - df_true_rates$Prob
 
 
 df_true_rates <- df_true_rates%>% 
-  rename(probability_theoretical = 1,
+  rename(p = 1,
          win_rate_observed = 2,
          difference = 3)
 
@@ -520,13 +520,13 @@ print(df_true_rates)
 ```{r, echo =FALSE}
 
 df_true_rates %>% 
-  ggplot(aes(x = probability_theoretical, y = win_rate_observed))+
+  ggplot(aes(x = p, y = win_rate_observed))+
   geom_point()+
-  scale_x_continuous(name="theoretical win rates", limits=c(0.1, 0.9),
+  scale_x_continuous(name="expected win rates", limits=c(0.1, 0.9),
                      n.breaks = 9)+
   scale_y_continuous(name="average observed win rates", limits=c(0.0, 1.0),
                      n.breaks = 11)+
-  ggtitle("Average observed win rate in relation to a fixed theoretical win rate")+
+  ggtitle("Average observed win rate in relation to a fixed expected win rate")+
   theme(plot.title = element_text(hjust= 0.5))+
   geom_abline(slope = 1, colour = "red")
 ```
