@@ -6,7 +6,7 @@ output: pdf_document
 bibliography: "references.bib"
 ---
 
-```{r include = FALSE}
+```{r, message=FALSE}
 
 library(tidyverse)
 library(parallel)
@@ -15,7 +15,7 @@ library(bibtex)
 
 ```
 
-```{r, echo=FALSE}
+```{r}
 # Setting seed for parallel computing:
 RNGkind("L'Ecuyer-CMRG")
 set.seed(0911)
@@ -41,11 +41,11 @@ set.seed(0911)
 
 probability_calculator <- function(n) {
 
-  X <- rnorm(n, mean = 4, sd = sqrt(10))
+  X <- rnorm(n, mean = 4, sd = sqrt(10)) #generating deviates
   Y <- runif(n, min = 2, max = 8)
 
   # Calculating Pr(X>Y)
-  Pr_hat <- sum(X > Y) / n
+  Pr_hat <- sum(X > Y) / n #calculating Pr(X>Y)
   
   output <- list(X = X,
                  Y = Y, 
@@ -55,7 +55,7 @@ probability_calculator <- function(n) {
 }
 
 
-results <- probability_calculator(100000)
+results <- probability_calculator(100000) #running 100k simulations
 
 
 print(results[3])
@@ -83,7 +83,7 @@ return(prob_vector)
 The bootstrap algorithm above re-samples the vectors X and Y *with replacement*, calculates the resulting $\widehat{Pr}(X>Y)$, and repeats this procedure *n* times. The algorithm generates a vector with *n*  probabilities. \
 Using the bootstrap algorithm, the distribution of $\widehat{Pr}(X>Y)$ can now be evaluated.\
 
-```{r echo = FALSE, warning=FALSE}
+```{r, warning=FALSE}
 RNGkind("L'Ecuyer-CMRG")
 set.seed(0911)
 
@@ -93,16 +93,15 @@ Y <- unlist(results[2]) #function into vectors
 #!!! as I use 3000 bootstraps, computation can take some time!!!
 prob_vec <- bootstrap_multicore_problem1(n_straps = 3000) 
 
-
 ```
 \
 1. Point estimates (Quantile):
-```{r echo=FALSE}
+```{r}
 quantile(prob_vec, c(0.025, 0.5, 0.975))
 ```
 \
 2. Visualization (histogram):
-```{r echo=FALSE, fig.align = 'center'}
+```{r, fig.align = 'center'}
 df_probabilities <- as.data.frame(prob_vec)
 
 df_probabilities %>% 
@@ -151,7 +150,7 @@ prob <- unlist(mclapply(n_deviates, function(i) {
 
 
 
-```{r warning = FALSE, echo=FALSE}
+```{r, warning = FALSE}
 results_1.3 <- data.frame(prob, n_deviates)
 
 
@@ -170,27 +169,28 @@ The plot above shows that with an increasing number of simulations used, the obs
 
 It can be assumed that for our simulation, |$\widehat{Pr}(X>Y)$ - $Pr(X>Y)$| $\rightarrow 0$ as $n \rightarrow \infty$.      
 
-```{r echo=FALSE}
+```{r, warning=FALSE}
 
 variance <- c()
 
 for (i in 1 : (length(prob) - 1)) {
-  variance[i] <- var(prob[1 : (i + 1)])
+  variance[i] <- var(prob[1 : (i + 1)]) #variance of interval [t, t+i]
 }
 
 results_1.3.2 <- data.frame(variance, n_deviates[2:3000])
 
 results_1.3.2 %>% 
   ggplot(aes(x = n_deviates.2.3000., y = variance))+
-  geom_point(alpha = 1/4)+
+  geom_line()+
   scale_y_continuous(name="variance of Pr(X>Y)", labels = label_number_si())+
-  scale_x_continuous(name="number of simulations", labels = label_number_si())+
   ggtitle("Variance of Pr(X>Y) in relation to the number of simulations")+
-  theme(plot.title = element_text(hjust= 0.5))
+  theme(plot.title = element_text(hjust= 0.5))+
+  xlim(c(0, 20000))+
+  xlab("number of simulations")+
+  geom_hline(yintercept = 0.001, color = "red", lty='dashed', lwd=0.5)
   
-
 ```
-A look at the total sample variance with dependence on the number of deviates used for the calculation shows that the variance approaches zero arbitrarily closely the more simulations are run, which underlines the assumption made above. It can be deducted that at least 100,000 simulations should be run to calculate the empirical probability $\widehat{Pr}(X>Y)$. 
+A look at the total sample variance with dependence on the number of deviates used for the calculation shows that the variance approaches zero arbitrarily closely the more simulations are run, which underlines the assumption made above. The horizontal line, indicating a variance of *0.001*, is passed when the number of simulations exceed 5000.
 
 
 ## Problem 2
@@ -231,8 +231,6 @@ for (i in 1 : 9) {
    }
   }
 
-  
-  
   true_winrate <- (sum(str_count(results_storage, pattern = "win")) / 
                      length(results_storage))
   
@@ -263,17 +261,17 @@ Playing one tournament, the observed results are as following: \
 \
 
 1. Overall results:
-```{r, echo=FALSE}
+```{r}
 results$overview
 ```
 
 2. Number of matched played:
-```{r, echo=FALSE}
+```{r}
 results$played_matches
 ```
 
 3. True win rate
-```{r, echo=FALSE}
+```{r}
 results$true_winrate
 ```
 
@@ -296,7 +294,7 @@ The algorithm described below takes a vector of expected win rates (*rates*) and
 tournament_stats_ngames <- function(n, rates = win_rates) {
   
   # generating a matrix for storing the results
-  store <- matrix(nrow = length(rates), ncol=n)
+  store <- matrix(nrow = length(rates), ncol=n) 
 
   # iterations i are corresponding the the number of rates the algorithm 
   # shall take into consideration
@@ -311,7 +309,6 @@ tournament_stats_ngames <- function(n, rates = win_rates) {
 }
   return(store)
 }
-
 
 ```
 
@@ -365,27 +362,27 @@ bootstrap_problem_two <- function(n_straps, store){
 }
 ```
 Using this algorithm on our matrix from above (*table_n_matches*) with *n* = 1000 bootstraps, we derive the following results:
-```{r, echo=FALSE}
+```{r}
 RNGkind("L'Ecuyer-CMRG")
 set.seed(0911)
+# 1000 bootstraps
+results_2.1 <- bootstrap_problem_two(1000, table_n_matches) 
 
-results_2.1 <- bootstrap_problem_two(1000, table_n_matches)
-
+# calculating delta values
 results_2.1$delta <- c(0, sapply(1:8, function(i) {
   results_2.1$average_value[i+1] - results_2.1$average_value[i]
 }))
-
 
 results_2.1 <- results_2.1 %>% 
   rename(p = 1,
          matches_played = 2)
 
-
 print(results_2.1)
 
 ```
 
-```{r echo=FALSE}
+```{r}
+# plotting the results
 
 results_2.1 %>% 
   ggplot(aes(x = p, y = matches_played))+
@@ -398,22 +395,20 @@ results_2.1 %>%
   ggtitle("Average number of played matches in relation to a fixed theoretical win rate")+
   theme(plot.title = element_text(hjust= 0.5))
 
-
-
 ```
 Analyzing the average number of matches played within a tournament as a function of *p*, we can observe an increase in the number of matches played from *p = 0.1* until its peak at *p=0.8* and afterwards decreasing. The reason lies in the format of the tournament itself. Due to the conditions of 7 wins or 3 losses, the tournament implies specific characteristics in terms of observable probabilities. In example, the probability for just playing the minimum amount of games, implying a team loses all of its first three games, can be expressed as $p(n_{games} = 3) = (1-p)^3$, while winning *at least* one game can be expressed as $1- p(n_{games} = 3)$. Assuming $p = 0.1$, $p(n_{games} = 3)$ is $(1-0.1)^3 = 0.729$, implying that  in 73 out of 100 tournaments observed, no more than 3 games are played if  *p* = 10%. Thinking of $p(n_{games} = 3)$ as a *bottleneck*, the probability of losing the first three games decreases exponentially with increasing *p*.
 
 
-```{r, echo=FALSE}
-p_loseall <- c()
+```{r}
+p_loseall <- c() # generating empty vector
 
-p_loseall <- sapply(win_rates, function(i){
+p_loseall <- sapply(win_rates, function(i){ # calculating Pr(n_games = 3)
   (1 - i)^3
   })
 
 df_loseall <- data.frame(win_rates, p_loseall)
 
-
+# plotting 
 df_loseall %>% 
   ggplot(aes(x = win_rates, y = p_loseall))+
   geom_line(color = "red")+
@@ -431,7 +426,7 @@ Another interesting factor is the peak of average played matches at *p=0.8* and 
 $f_1(p) = {9 \choose 7}p^7(1-p)^{9-7}$\
 $f_2(p) = {9 \choose 2}(1-p)^2(1-(1-p))^{9-2}$\
 
-```{r, echo=FALSE}
+```{r}
 
 # Using simple grid optimization
 p <- seq(0.1, 0.95, 0.001) #vector with fixed win rates
@@ -452,14 +447,14 @@ maximum_func2 <- p[index_max2]
 
 ```
 
-```{r, echo=FALSE}
-df_f1 <- data.frame(p, y, z) %>% 
+```{r}
+df_f1_2 <- data.frame(p, y, z) %>% # creating df for plotting
   rename(function1 = 2,
          function2 = 3)
 
 
 
-df_f1 %>% 
+df_f1_2 %>% # plotting
   ggplot(mapping = (aes(x = p)))+
   geom_line(aes(y = function1, color = "function1"))+
   geom_line(aes(y = function2, color = "function2"))+
@@ -475,7 +470,7 @@ df_f1 %>%
 ```
 
 
-Using a simple grid search algorithm for seeking the maximum of both $f_1(p)$ and $f_2(p)$, both functions peek at a *p* of `r toString(maximum_func1)` and `r toString(maximum_func2)`, respectively. In conclusion, the likelihood of playing the maximum amount of matches in a tournament decreases with a *p* > 0.78. Therefore, we can observe a negative $\delta$ at *p* = 0.9
+Using a simple grid search algorithm for obtaining the maximum of both $f_1(p)$ and $f_2(p)$, the functions peek at a *p* of `r toString(maximum_func1)` and `r toString(maximum_func2)`, respectively. In conclusion, the likelihood of playing the maximum amount of matches in a tournament decreases with a *p* > 0.78. Therefore, we can observe a negative $\delta$ at *p* = 0.9. 
 
 The last part of the problem asks for the true win rates (observed win rates) of a team in comparison to the underlying expected win rate of the simulation. To solve this problem with computation, an appropriate algorithm is needed.\
 The algorithm below is an altered version of the *tournament_stats_ngames* algorithm. The only difference is that it now uses the third element of the output list of the original underlying algorithm *tournament_sim*, which is the proportion of matches won in a tournament. 
@@ -490,25 +485,25 @@ for (i in 1 : length(rates)) {
   
 store[i,] <- unlist(mclapply(1:n, function(i){
   as.numeric(tournament_sim(p_win = prob)[3]) # output of tournament_sim is 
-  }, mc.cores = 6, mc.set.seed = TRUE))                           # now true_winrate, as numeric
+  }, mc.cores = 6, mc.set.seed = TRUE)) # now true_winrate, as numeric
 }
   return(store)
 }
 ```
 We again simulate 10,000 tournaments and use the bootstrap algorithm (1000 bootstrap-samples per theoretical win rate) for deriving the most accurate estimates.
 
-```{r, echo=FALSE}
+```{r}
 RNGkind("L'Ecuyer-CMRG")
 set.seed(0911)
-
-true_w_rates <- tournament_stats_truewinrate(10000)
-
+# simulating 10k tournaments
+true_w_rates <- tournament_stats_truewinrate(10000) 
+# generating 1000 bootstraps
 df_true_rates <- bootstrap_problem_two(n_straps = 1000, store = true_w_rates)
-
+# calculating difference between observed vs. expected
 df_true_rates$diff <- df_true_rates$average_value - df_true_rates$Prob
 
 
-df_true_rates <- df_true_rates%>% 
+df_true_rates <- df_true_rates%>% #renaming
   rename(p = 1,
          win_rate_observed = 2,
          difference = 3)
@@ -517,8 +512,8 @@ df_true_rates <- df_true_rates%>%
 print(df_true_rates)
 ```
 
-```{r, echo =FALSE}
-
+```{r}
+# plotting
 df_true_rates %>% 
   ggplot(aes(x = p, y = win_rate_observed))+
   geom_point()+

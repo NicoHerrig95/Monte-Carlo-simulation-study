@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.26)  27 OCT 2022 14:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.26)  29 OCT 2022 16:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -432,145 +432,148 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 135.
 (/Users/nicoherrig/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 140.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 140.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 140.
-
-Underfull \hbox (badness 10000) in paragraph at lines 139--148
-
- []
-
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 156.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 137.
 (/Users/nicoherrig/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 157.
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 148.
 (/Users/nicoherrig/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 157.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 157.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 157.
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--165
+
+ []
+
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 160.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 177.
 [1
 
 {/Users/nicoherrig/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 214--220
+Underfull \hbox (badness 10000) in paragraph at lines 231--237
 
  []
 
-<MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf, id=29, 469.755pt x 325.215pt>
+[2]
+<MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf, id=35, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf  used on input line 232.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf  used on input line 288.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[2] [3 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf>]
+[3 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf>]
 <MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf, id=45, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 274.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 347.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 274--278
+Underfull \hbox (badness 10000) in paragraph at lines 347--351
 [][]
  []
 
-<MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf, id=46, 469.755pt x 325.215pt>
+[4]
+<MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf, id=50, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 283.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 378.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 283--290
+Underfull \hbox (badness 10000) in paragraph at lines 378--384
 [][]
  []
 
-[4 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 294--305
+[5 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 388--399
 
  []
 
-[5 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 353--355
+[6 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 445--447
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 369--371
+Underfull \hbox (badness 10000) in paragraph at lines 461--463
 
  []
 
-[6] [7] [8]
+[7] [8] [9]
 <MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf, id=93, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf  used on input line 533.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf  used on input line 680.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 533--549
+Underfull \hbox (badness 10000) in paragraph at lines 680--696
 [][]
  []
 
-<MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf, id=94, 469.755pt x 325.215pt>
+[10] [11 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf>]
+<MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf, id=108, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 550.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 721.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 560.
+(amsmath)                 on input line 731.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 550--562
+Underfull \hbox (badness 10000) in paragraph at lines 721--733
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 550--562
+Underfull \hbox (badness 10000) in paragraph at lines 721--733
 
  []
 
-[9 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf>]
-<MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf, id=105, 469.755pt x 325.215pt>
+[12 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf>]
+<MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf, id=119, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf  used on input line 563.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf  used on input line 778.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[10 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf>] [11 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf>]
-<MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf, id=125, 469.755pt x 325.215pt>
+[13 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf>] [14]
+<MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf, id=134, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf  used on input line 616.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf  used on input line 869.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 616--636
+Underfull \hbox (badness 10000) in paragraph at lines 869--889
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 616--636
+Underfull \hbox (badness 10000) in paragraph at lines 869--889
 
  []
 
-[12 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf>] [13] (./MT5763_2_22001614.aux)
+[15 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf>] [16] (./MT5763_2_22001614.aux)
 Package rerunfilecheck Info: File `MT5763_2_22001614.out' has not changed.
 (rerunfilecheck)             Checksum: 3921C61A2C52784ADB21D781F6F62C6B;184.
  ) 
 Here is how much of TeX's memory you used:
- 11207 strings out of 477031
- 178139 string characters out of 5827042
- 518131 words of memory out of 5000000
- 32140 multiletter control sequences out of 15000+600000
+ 11211 strings out of 477031
+ 178173 string characters out of 5827042
+ 519131 words of memory out of 5000000
+ 32141 multiletter control sequences out of 15000+600000
  511383 words of font info for 69 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,6n,77p,373b,582s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,6n,77p,431b,470s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}</Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on MT5763_2_22001614.pdf (13 pages, 602666 bytes).
+Output written on MT5763_2_22001614.pdf (16 pages, 491791 bytes).
 PDF statistics:
- 226 PDF objects out of 1000 (max. 8388607)
- 162 compressed objects within 2 object streams
- 24 named destinations out of 1000 (max. 500000)
+ 235 PDF objects out of 1000 (max. 8388607)
+ 168 compressed objects within 2 object streams
+ 27 named destinations out of 1000 (max. 500000)
  52 words of extra memory for PDF output out of 10000 (max. 10000000)
 
