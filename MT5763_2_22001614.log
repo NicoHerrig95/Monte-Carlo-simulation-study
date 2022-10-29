@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.26)  29 OCT 2022 16:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.26)  29 OCT 2022 23:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -456,7 +456,7 @@ LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 [1
 
 {/Users/nicoherrig/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 231--237
+Underfull \hbox (badness 10000) in paragraph at lines 234--240
 
  []
 
@@ -464,16 +464,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 231--237
 <MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf, id=35, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf  used on input line 288.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf  used on input line 291.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [3 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-7-1.pdf>]
 <MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf, id=45, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 347.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf  used on input line 352.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 347--351
+Underfull \hbox (badness 10000) in paragraph at lines 352--356
 [][]
  []
 
@@ -481,25 +481,25 @@ Underfull \hbox (badness 10000) in paragraph at lines 347--351
 <MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf, id=50, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 378.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 383.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 378--384
+Underfull \hbox (badness 10000) in paragraph at lines 383--388
 [][]
  []
 
 [5 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-9-1.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 388--399
+Underfull \hbox (badness 10000) in paragraph at lines 392--403
 
  []
 
 [6 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-10-1.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 445--447
+Underfull \hbox (badness 10000) in paragraph at lines 449--451
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 461--463
+Underfull \hbox (badness 10000) in paragraph at lines 465--467
 
  []
 
@@ -507,10 +507,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 461--463
 <MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf, id=93, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf  used on input line 680.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-21-1.pdf  used on input line 682.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--696
+Underfull \hbox (badness 10000) in paragraph at lines 682--698
 [][]
  []
 
@@ -518,20 +518,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 680--696
 <MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf, id=108, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 721.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 723.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 731.
+(amsmath)                 on input line 733.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 721--733
+Underfull \hbox (badness 10000) in paragraph at lines 723--735
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 721--733
+Underfull \hbox (badness 10000) in paragraph at lines 723--735
 
  []
 
@@ -539,21 +539,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 721--733
 <MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf, id=119, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf  used on input line 778.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf  used on input line 780.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [13 <./MT5763_2_22001614_files/figure-latex/unnamed-chunk-24-1.pdf>] [14]
 <MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf, id=134, 469.755pt x 325.215pt>
 File: MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf Graphic file (type pdf)
 <use MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf>
-Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf  used on input line 869.
+Package pdftex.def Info: MT5763_2_22001614_files/figure-latex/unnamed-chunk-27-1.pdf  used on input line 871.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 869--889
+Underfull \hbox (badness 10000) in paragraph at lines 871--891
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 869--889
+Underfull \hbox (badness 10000) in paragraph at lines 871--891
 
  []
 
@@ -568,9 +568,9 @@ Here is how much of TeX's memory you used:
  32141 multiletter control sequences out of 15000+600000
  511383 words of font info for 69 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,6n,77p,431b,470s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,6n,77p,431b,582s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}</Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb></Users/nicoherrig/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on MT5763_2_22001614.pdf (16 pages, 491791 bytes).
+Output written on MT5763_2_22001614.pdf (16 pages, 492181 bytes).
 PDF statistics:
  235 PDF objects out of 1000 (max. 8388607)
  168 compressed objects within 2 object streams
