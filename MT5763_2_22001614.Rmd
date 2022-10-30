@@ -283,7 +283,7 @@ results$true_winrate
 
 
 \
-It now should be taken in consideration how the *number of total matches* changes if we alter  $p$. As the conditions for ending a tournament are either 7 wins or 3 losses, the number of played matches can be defined as $x \in \mathbb{N} [3,9]$, where x is the number of matches played.
+It now should be taken into consideration how the *number of total matches* changes if we alter  $p$. As the conditions for ending a tournament are either 7 wins or 3 losses, the number of played matches can be defined as $x \in \mathbb{N} [3,9]$, where x is the number of matches played.
 Win rates from $p = 0.1$ to $p = 0.9$ are taken into consideration, with steps of 0.1.  
 
 ```{r}
