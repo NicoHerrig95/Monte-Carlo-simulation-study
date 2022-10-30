@@ -284,7 +284,7 @@ results$true_winrate
 
 \
 It now should be taken in consideration how the *number of total matches* changes if we alter  $p$. As the conditions for ending a tournament are either 7 wins or 3 losses, the number of played matches can be defined as $x \in \mathbb{N} [3,9]$, where x is the number of matches played.
-Win rates from $p = 0.1$ to $p = 0.9$ are taken into consideration, in steps by 0.1.  
+Win rates from $p = 0.1$ to $p = 0.9$ are taken into consideration, with steps of 0.1.  
 
 ```{r}
 # Generating a vector containing the win rates of interest
@@ -326,8 +326,8 @@ set.seed(0911)
 table_n_matches <- tournament_stats_ngames(n = 10000)
 ```
 
-As exact results are of interest, the matrix containing the number of matches per tournament  is put into a non-parametric bootstrap algorithm. The algorithm, using a matrix as an input as well as the number of bootstraps *n* (*per winning rate*), generates the mean of the strapped sample in a first step (i.e., *n* means per fixed winning rate). In a second step, the algorithm then calculates the mean of the calculated means from the bootstrapping in step 1.\
-The aim of this algorithm is to compute the most accurate estimator for the numbers of matches played in a tournament, corresponding to the underlying fixed winning rate *p*.
+The matrix containing the number of matches per tournament  is put into a non-parametric bootstrap algorithm. Using a bootstrap algorithm allows us to make inferences by treating the produced sample as if it is the population and calculating an empirical estimate from the statistic's sampling distribution by using Monte-Carlo sampling techniques (@abney2002bootstrapping). The algorithm, using a matrix  and the number of bootstraps *n* (*per winning rate*) as an input, generates the mean of the strapped sample in a first step (i.e., *n* means per fixed winning rate). In a second step, the algorithm then calculates the mean of the calculated means in step 1.\
+.
 
 ```{r}
 # Generating a bootstrap function with number of straps and matrix of results
@@ -424,8 +424,8 @@ df_loseall %>%
   theme(plot.title = element_text(hjust= 0.5))
   
 ```
-This explains the growing $\delta$ values observed, which are peaking at *p = 0.6*.\
-Another interesting factor is the peak of average played matches at *p=0.8* and a negative $\delta$ at 0.9. Thinking about the problem as a maximization problem of matches played per tournament, we want to know for which win rate *p* the probability of playing 9 matches in a tournament is the highest.We are looking at two functions: One for 7 wins and 2 losses ($f_1(p)$) and the other for 6 wins and 3 losses ($f_2(p)$): \
+This explains the growing $\Delta$ values observed, which are peaking at *p = 0.6*.\
+Another interesting factor is the peak of average played matches at *p=0.8* and a negative $\Delta$ at 0.9. Thinking about the problem as a maximization problem of matches played per tournament, we want to know for which win rate *p* the probability of playing 9 matches in a tournament is the highest.We are looking at two functions: One for 7 wins and 2 losses ($f_1(p)$) and the other for 6 wins and 3 losses ($f_2(p)$): \
 $f_1(p) = {9 \choose 7}p^7(1-p)^{9-7}$\
 $f_2(p) = {9 \choose 2}(1-p)^2(1-(1-p))^{9-2}$\
 
@@ -451,7 +451,7 @@ maximum_func2 <- p[index_max2]
 ```
 
 ```{r}
-df_f1_2 <- data.frame(p, y, z) %>% # creating df for plotting
+df_f1_2 <- data.frame(p, y, z) %>% # creating data frame for plotting
   rename(function1 = 2,
          function2 = 3)
 
@@ -473,7 +473,7 @@ df_f1_2 %>% # plotting
 ```
 
 
-Using a simple grid search algorithm for obtaining the maximum of both $f_1(p)$ and $f_2(p)$, the functions peek at a *p* of `r toString(maximum_func1)` and `r toString(maximum_func2)`, respectively. In conclusion, the likelihood of playing the maximum amount of matches in a tournament decreases with a *p* > 0.78. Therefore, we can observe a negative $\delta$ at *p* = 0.9. 
+Using a simple grid search algorithm for obtaining the maximum of both $f_1(p)$ and $f_2(p)$, the functions peek at a *p* of `r toString(maximum_func1)` and `r toString(maximum_func2)`, respectively. In conclusion, the likelihood of playing the maximum amount of matches in a tournament decreases with a *p* > 0.78. Therefore, we can observe a negative $\Delta$ at *p* = 0.9 and can generally assume negative $\Delta$-values for $p > 0.9$. 
 
 The last part of the problem asks for the true win rates (observed win rates) of a team in comparison to the underlying expected win rate of the simulation. To solve this problem with computation, an appropriate algorithm is needed.\
 The algorithm below is an altered version of the *tournament_stats_ngames* algorithm. The only difference is that it now uses the third element of the output list of the original underlying algorithm *tournament_sim*, which is the proportion of matches won in a tournament. 
@@ -493,7 +493,7 @@ store[i,] <- unlist(mclapply(1:n, function(i){
   return(store)
 }
 ```
-We again simulate 10,000 tournaments and use the bootstrap algorithm (1000 bootstrap-samples per theoretical win rate) for deriving the most accurate estimates.
+We again simulate 10,000 tournaments and use the bootstrap algorithm (1000 bootstrap-samples per theoretical win rate) for deriving reliable estimates.
 
 ```{r}
 RNGkind("L'Ecuyer-CMRG")
@@ -529,8 +529,8 @@ df_true_rates %>%
   geom_abline(slope = 1, colour = "red")
 ```
 The graphic above shows the average (*mean*) observed win rate per match in relation to its underlying fixed win rate. Although simulating 10,000 tournaments and using bootstrapping to obtain the most accurate estimate, we can observe a  certain difference between the theoretical win rate per match and the actual observed counterpart.\
-This discrepancy is again due to the format of the tournament, i.e. the condition of 7 wins or 3 losses ending the tournament explained above.  As $p(n_{games} = 3) = 0.729$ when $p = 0.1$, we can observe a 0% win rate at 73 out of 100 tournaments with such *p*, implying a difference between the theoretical and the observed win rate of -0.1 each time.\
-The greatest difference between the theoretical and the average observed win rate can be seen at a win rate of 40%, with a difference of -18% from the theoretical winning rate. If we apply the logic from the example above, the probability of no wins at all is $(1-0.4)^3 = 0.216$, implying a difference of -0.4 in 22 out of 100 tournament compared to the theoretical winning rate.\
+This discrepancy is again due to the format of the tournament, i.e. the condition of 7 wins or 3 losses ending the tournament explained above.  As $p(n_{games} = 3) = 0.729$ for $p = 0.1$, we can observe a 0% win rate at 73 out of 100 tournaments with such *p*, implying a difference between the theoretical and the observed win rate of -0.1 each time.\
+The greatest difference between the theoretical and the average observed win rate can be seen at $p = 40%$, with a difference of -18% from the theoretical winning rate. If we apply the logic from the example above, the probability of no wins at all is $(1-0.4)^3 = 0.216$, implying a difference of -0.4 in 22 out of 100 tournament compared to the expected win rate.\
 \
 References:\
 
