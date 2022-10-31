@@ -448,30 +448,10 @@ z <- unlist(lapply(p, function(i){ # f(p)_2
 index_max2 <- which.max(z) # index for maximum of f(p)_2
 maximum_func2 <- p[index_max2]
 
+cat("maximum of function 1:", maximum_func1, "\n")
+cat("maximum of function 2:", maximum_func2, "\n")
+
 ```
-
-```{r}
-df_f1_2 <- data.frame(p, y, z) %>% # creating data frame for plotting
-  rename(function1 = 2,
-         function2 = 3)
-
-
-
-df_f1_2 %>% # plotting
-  ggplot(mapping = (aes(x = p)))+
-  geom_line(aes(y = function1, color = "function1"))+
-  geom_line(aes(y = function2, color = "function2"))+
-  geom_vline(xintercept = maximum_func1, colour = "red", lty='dashed', lwd=1)+
-  geom_vline(xintercept = maximum_func2, colour = "red", lty='dashed', lwd=1)+
-  labs(x = "expected win rate",
-         y = "P(n_games = 9)",
-         color = "Legend")+
-  scale_colour_manual("", 
-                      breaks = c("function1", "function2"),
-                      values = c("function1"="lightblue", "function2"="darkblue"))
-  
-```
-
 
 Using a simple grid search algorithm for obtaining the maximum of both $f_1(p)$ and $f_2(p)$, the functions peek at a *p* of `r toString(maximum_func1)` and `r toString(maximum_func2)`, respectively. In conclusion, the likelihood of playing the maximum amount of matches in a tournament decreases with a *p* > 0.78. Therefore, we can observe a negative $\Delta$ at *p* = 0.9 and can generally assume negative $\Delta$-values for $p > 0.9$. 
 
@@ -528,8 +508,8 @@ df_true_rates %>%
   theme(plot.title = element_text(hjust= 0.5))+
   geom_abline(slope = 1, colour = "red")
 ```
-The graphic above shows the average (*mean*) observed win rate per match in relation to its underlying fixed win rate. Although simulating 10,000 tournaments and using bootstrapping to obtain the most accurate estimate, we can observe a  certain difference between the theoretical win rate per match and the actual observed counterpart.\
-This discrepancy is again due to the format of the tournament, i.e. the condition of 7 wins or 3 losses ending the tournament explained above.  As $p(n_{games} = 3) = 0.729$ for $p = 0.1$, we can observe a 0% win rate at 73 out of 100 tournaments with such *p*, implying a difference between the theoretical and the observed win rate of -0.1 each time.\
+The graphic above shows the average (*mean*) observed win rate per match in relation to its underlying fixed win rate. Although simulating 10,000 tournaments, we can observe a  certain difference between the theoretical win rate per match and the actual observed counterpart.\
+This discrepancy is again due to the format of the tournament, i.e. the condition of 7 wins or 3 losses ending the tournament.  As $p(n_{games} = 3) = 0.729$ for $p = 0.1$, we can observe a 0% win rate at 73 out of 100 tournaments with such *p*, implying a difference between the expected and the observed win rate of -0.1 each time.\
 The greatest difference between the theoretical and the average observed win rate can be seen at $p = 40%$, with a difference of -18% from the theoretical winning rate. If we apply the logic from the example above, the probability of no wins at all is $(1-0.4)^3 = 0.216$, implying a difference of -0.4 in 22 out of 100 tournament compared to the expected win rate.\
 \
 References:\
