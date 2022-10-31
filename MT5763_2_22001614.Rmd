@@ -21,6 +21,8 @@ set.seed(0911)
 ```
 
 
+Important note at the beginning: As there seems to be no consent in the literature about the  number of Monte Carlo simulations required for obtaining sufficient results, I followed the recommendation of @liu2017optimal who aims for numbers between 100k and 500k for a proper use of the law of large numbers theorem. As this "accuracy" comes at the cost of longer computation time, some code chunks might take several seconds for computation.
+
 ## Problem 1
 
 Description:
