@@ -395,7 +395,7 @@ results_2.1 %>%
                      n.breaks = 9)+
   scale_y_continuous(name="average matches played", limits=c(0, 9),
                      n.breaks = 9)+
-  ggtitle("Average number of played matches in relation to a fixed theoretical win rate")+
+  ggtitle("Average number of played matches in relation to a fixed expected win rate")+
   theme(plot.title = element_text(hjust= 0.5))
 
 ```
@@ -473,7 +473,7 @@ store[i,] <- unlist(mclapply(1:n, function(i){
   return(store)
 }
 ```
-We again simulate 10,000 tournaments and use the bootstrap algorithm (1000 bootstrap-samples per theoretical win rate) for deriving reliable estimates.
+We again simulate 10,000 tournaments and use the bootstrap algorithm (1000 bootstrap-samples per expected win rate) for deriving reliable estimates.
 
 ```{r}
 RNGkind("L'Ecuyer-CMRG")
@@ -508,9 +508,9 @@ df_true_rates %>%
   theme(plot.title = element_text(hjust= 0.5))+
   geom_abline(slope = 1, colour = "red")
 ```
-The graphic above shows the average (*mean*) observed win rate per match in relation to its underlying fixed win rate. Although simulating 10,000 tournaments, we can observe a  certain difference between the theoretical win rate per match and the actual observed counterpart.\
+The graphic above shows the average (*mean*) observed win rate per match in relation to its underlying fixed win rate. Although simulating 10,000 tournaments, we can observe a  certain difference between the expected win rate per match and the actual observed counterpart.\
 This discrepancy is again due to the format of the tournament, i.e. the condition of 7 wins or 3 losses ending the tournament.  As $p(n_{games} = 3) = 0.729$ for $p = 0.1$, we can observe a 0% win rate at 73 out of 100 tournaments with such *p*, implying a difference between the expected and the observed win rate of -0.1 each time.\
-The greatest difference between the theoretical and the average observed win rate can be seen at $p = 40%$, with a difference of -18% from the theoretical winning rate. If we apply the logic from the example above, the probability of no wins at all is $(1-0.4)^3 = 0.216$, implying a difference of -0.4 in 22 out of 100 tournament compared to the expected win rate.\
+The greatest difference between the expected and the average observed win rate can be seen at $p = 40%$, with a difference of -18% from the expected winning rate. If we apply the logic from the example above, the probability of no wins at all is $(1-0.4)^3 = 0.216$, implying a difference of -0.4 in 22 out of 100 tournament compared to the expected win rate.\
 \
 References:\
 
