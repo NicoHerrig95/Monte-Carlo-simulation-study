@@ -514,7 +514,7 @@ df_true_rates %>%
 ```
 The graphic above shows the average (*mean*) observed win rate per match in relation to its underlying fixed win rate. Although simulating 10,000 tournaments, we can observe a  certain difference between the expected win rate per match and the actual observed counterpart.\
 This discrepancy is again due to the format of the tournament, i.e. the condition of 7 wins or 3 losses ending the tournament.  As $p(n_{games} = 3) = 0.729$ for $p = 0.1$, we can observe a 0% win rate at 73 out of 100 tournaments with such *p*, implying a difference between the expected and the observed win rate of -0.1 each time.\
-The greatest difference between the expected and the average observed win rate can be seen at $p = 40%$, with a difference of -18% from the expected winning rate. If we apply the logic from the example above, the probability of no wins at all is $(1-0.4)^3 = 0.216$, implying a difference of -0.4 in 22 out of 100 tournament compared to the expected win rate.\
+The greatest difference between the expected and the average observed win rate can be seen around $p = 0.5%$. If we apply the logic from the example above, the probability of no wins at all is $(1-0.5)^3 = 0.125$, implying a difference of -0.5 in 13 out of 100 tournament compared to the expected win rate, which then results in a the observable discrepance between the expected and the average observed win rate.\
 \
 References:\
 
