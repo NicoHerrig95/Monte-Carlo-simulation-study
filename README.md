@@ -5,7 +5,7 @@
 ### Problem 1:
 
 Consider the following independent random variables:\
-X \~ N($\mu$ = 4, $\sigma^2$ = 10)\
+X \~ N( $\mu$ = 4, $\sigma^2$ = 10)\
 Y \~ U(a = 2, b = 8).\
 Compute $Pr(X > Y)$ and solve with empirical techniques.
 
