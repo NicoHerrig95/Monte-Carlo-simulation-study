@@ -1,6 +1,6 @@
 # Monte-Carlo Simulation Study
 
-## This paper deals with two problems from the course " MT5763 -Software for Data Analysis" at the University of St. Andrews. The solutions are based on computational/empirical methods. Problems are listed below.
+## This paper deals with two problems from the course " MT5763 -Software for Data Analysis" at the University of St. Andrews. Code is written in R and is included in the *Simulation_Study.Rmd* file.
 
 ### Problem 1:
 
@@ -15,6 +15,6 @@ Consider the following football tournament format: a team keeps playing until th
 Plot how the total number of matches played (i.e. wins + losses) varies as a function of $p$.\
 Comment on the observed win rate relative to the assumed win rate $p$. Specifically, focus on the effect driven by the format of this tournament.\
 
-### Techniques:
+### Code and Techniques:
 
-Both problems are solved using Monte-Carlo techniques, bootstrapping and univariate optimization. Further, the solution for problem 2 contains an analytical proof.
+Both problems are solved using Monte-Carlo techniques, bootstrapping and univariate optimization. Further, the solution for problem 2 contains an analytical proof. As Monte-Carlo simulations are computational intensive, parallel-computing techniques are used to reduce computation time. *please note that the code is optimized for macOS systems.*
