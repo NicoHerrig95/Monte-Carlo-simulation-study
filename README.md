@@ -1,6 +1,6 @@
 # Monte-Carlo Simulation Study
 
-## This paper deals with two problems from the course " MT5763 -Software for Data Analysis" at the University of St. Andrews. Code is written in R and is included in the *Simulation_Study.Rmd* file.
+## This project deals with two problems from the course " MT5763 -Software for Data Analysis" at the University of St. Andrews. Code is written in R and is included in the *Simulation_Study.Rmd* file.
 
 ### Problem 1:
 
